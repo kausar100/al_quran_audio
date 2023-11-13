@@ -1,9 +1,9 @@
-import 'package:al_quran_audio/bloc/surah/surah_bloc.dart';
 import 'package:al_quran_audio/screens/read_page.dart';
 import 'package:al_quran_audio/screens/listen_page.dart';
 import 'package:flutter/material.dart';
 
 class AppView extends StatefulWidget {
+  static const routeHomePage = '/home_page';
   const AppView({super.key});
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Listening extends StatefulWidget {
+  static const routeListening = '/listening_page';
   const Listening({super.key});
 
   @override
@@ -13,7 +14,7 @@ class Listening extends StatefulWidget {
 
 class _ListeningState extends State<Listening> {
   final SurahBloc _surahBloc = SurahBloc();
-  
+
   @override
   void initState() {
     _surahBloc.getAllSurah();
@@ -31,7 +32,11 @@ class _ListeningState extends State<Listening> {
                 return const CircularProgressIndicator();
               }
               if (state is LoadedSurahState) {
-                return ListWidget(surahInfo: state.listOfSurah);
+                return ListWidget(
+                    surahInfo: state.listOfSurah,
+                    onTap: (id) {
+                      print(id.toString());
+                    });
               }
               if (state is ErrorSurahState) {
                 return Text(state.message);

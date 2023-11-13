@@ -12,4 +12,27 @@ class APICall {
       rethrow;
     }
   }
+
+  //get all Surah names
+  Future<http.Response> getSurahById(int id, Edition edition) async {
+    try {
+      final uri = Uri.parse(APIConstant.getSurahUrl(surahNumber: id.toString(), language: edition));
+
+      return await http.get(uri);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  
+  //get all Surah names
+  Future<http.Response> getArabicSurahById(int id) async {
+    try {
+      final uri = Uri.parse(APIConstant.getArabicSurahUrl(surahNumber: id.toString()));
+
+      return await http.get(uri);
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

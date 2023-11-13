@@ -19,4 +19,8 @@ class APIConstant {
         return '$baseUrl/surah/$surahNumber/$enEdition';
     }
   }
+
+  static String getArabicSurahUrl({required String surahNumber}) {
+    return '$baseUrl/surah/$surahNumber';
+  }
 }
