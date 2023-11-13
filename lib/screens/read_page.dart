@@ -46,7 +46,7 @@ class _ReadingState extends State<Reading> {
                 return ListWidget(
                   surahInfo: state.listOfSurah,
                   onTap: (id) {
-                    print('surah number : ${id + 1}');
+                    // print('surah number : ${id + 1}');
                     _gotoReadPage(id, state.listOfSurah.elementAt(id));
                   },
                 );

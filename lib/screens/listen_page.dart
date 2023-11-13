@@ -35,7 +35,7 @@ class _ListeningState extends State<Listening> {
                 return ListWidget(
                     surahInfo: state.listOfSurah,
                     onTap: (id) {
-                      print(id.toString());
+                      // print(id.toString());
                     });
               }
               if (state is ErrorSurahState) {

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Al Quran Audio',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green
         ),
         home: const AppView(),
         routes: {

@@ -39,7 +39,7 @@ class _AppViewState extends State<AppView> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.green.shade900,
         onTap: _onItemTapped,
       ),
     );
