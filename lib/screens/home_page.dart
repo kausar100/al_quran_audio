@@ -1,6 +1,8 @@
+import 'package:al_quran_audio/bloc/surah/surah_bloc.dart';
 import 'package:al_quran_audio/screens/read_page.dart';
 import 'package:al_quran_audio/screens/listen_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppView extends StatefulWidget {
   static const routeHomePage = '/home_page';
@@ -12,6 +14,7 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> {
   int _selectedIndex = 0;
+  bool needToFetch = true;
 
   static const List<Widget> _widgetOptions = <Widget>[Reading(), Listening()];
 
@@ -23,6 +26,11 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<SurahBloc>(context);
+    if(needToFetch){
+      needToFetch = false;
+      _getSurahInformation(bloc);
+    }
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -43,5 +51,9 @@ class _AppViewState extends State<AppView> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  _getSurahInformation(SurahBloc bloc) {
+    bloc.getSurahInfo();
   }
 }

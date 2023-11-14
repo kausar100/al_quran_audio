@@ -13,20 +13,19 @@ class Listening extends StatefulWidget {
 }
 
 class _ListeningState extends State<Listening> {
-  final SurahBloc _surahBloc = SurahBloc();
-
-  @override
-  void initState() {
-    _surahBloc.getAllSurah();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final surahBloc = BlocProvider.of<SurahBloc>(context, listen: true);
     return Scaffold(
       body: Center(
-        child: BlocBuilder(
-            bloc: _surahBloc,
+        child: BlocConsumer<SurahBloc, SurahState>(
+            bloc: surahBloc,
+            listener: (context, state) {
+              if (state is SavedSurahState) {
+                _showSnackBar(state.message);
+              }
+            },
             builder: (context, state) {
               if (state is LoadingSurahState || state is InitialSurahState) {
                 return const CircularProgressIndicator();
@@ -45,5 +44,9 @@ class _ListeningState extends State<Listening> {
             }),
       ),
     );
+  }
+  _showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 }

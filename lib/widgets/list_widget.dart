@@ -19,27 +19,28 @@ class ListWidget extends StatelessWidget {
                 shadowColor: Colors.green.shade100,
                 elevation: 1.0,
                 child: ListTile(
-                  onTap: () {
-                    //send index
-                    onTap(index);
-                  },
-                  leading: ClipOval(
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          color: Colors.green.shade100,
-                          child: Center(child: Text('${index + 1}')))),
-                  title: Text('${surahInfo[index].englishName}'),
-                  subtitle: Text('${surahInfo[index].englishNameTranslation}'),
-                  trailing: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.green.shade100),
-                    height: 30,
-                    width: 30,
-                    child: Center(
-                        child: Text('${surahInfo[index].numberOfAyahs}')),
-                  ),
+                    onTap: () {
+                      //send index
+                      onTap(index);
+                    },
+                    leading: ClipOval(
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            color: Colors.green.shade100,
+                            child: Center(child: Text('${index + 1}')))),
+                    title: Text('${surahInfo[index].englishName}'),
+                    subtitle:
+                        Text('${surahInfo[index].englishNameTranslation}'),
+                    trailing:
+                    Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.green.shade50,
+                            ),
+                            shape: BoxShape.circle),
+                        child: Text('${surahInfo[index].numberOfAyahs}'))
                 ),
               ),
             ),

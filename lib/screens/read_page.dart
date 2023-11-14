@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Reading extends StatefulWidget {
   static const routeReading = '/reading_page';
+
   const Reading({super.key});
 
   @override
@@ -18,14 +19,6 @@ class Reading extends StatefulWidget {
 }
 
 class _ReadingState extends State<Reading> {
-  final SurahBloc _surahBloc = SurahBloc();
-
-  @override
-  void initState() {
-    _surahBloc.getAllSurah();
-    super.initState();
-  }
-
   _gotoReadPage(int surahNumber, Surah surah) {
     Navigator.pushNamed(context, ReadSurah.routeReadSurah,
         arguments:
@@ -34,10 +27,16 @@ class _ReadingState extends State<Reading> {
 
   @override
   Widget build(BuildContext context) {
+    final surahBloc = BlocProvider.of<SurahBloc>(context, listen: true);
     return Scaffold(
       body: Center(
-        child: BlocBuilder(
-            bloc: _surahBloc,
+        child: BlocConsumer<SurahBloc, SurahState>(
+            bloc: surahBloc,
+            listener: (context, state) {
+              if (state is SavedSurahState) {
+                _showSnackBar(state.message);
+              }
+            },
             builder: (context, state) {
               if (state is LoadingSurahState || state is InitialSurahState) {
                 return const CircularProgressIndicator();
@@ -58,5 +57,10 @@ class _ReadingState extends State<Reading> {
             }),
       ),
     );
+  }
+
+  _showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 }

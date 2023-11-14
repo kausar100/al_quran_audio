@@ -12,6 +12,11 @@ class LoadedSurahState extends SurahState {
   LoadedSurahState({required this.listOfSurah});
 }
 
+class SavedSurahState extends SurahState {
+  final String message;
+  SavedSurahState({required this.message});
+}
+
 class ErrorSurahState extends SurahState {
   final String message;
   ErrorSurahState({required this.message});
