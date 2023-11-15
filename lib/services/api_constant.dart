@@ -1,4 +1,4 @@
-enum Edition { bangla, english }
+enum Edition { bangla, english, arabic }
 
 class APIConstant {
   static const baseUrl = 'http://api.alquran.cloud/v1';
@@ -17,10 +17,8 @@ class APIConstant {
         return '$baseUrl/surah/$surahNumber/$bnEdition';
       case Edition.english:
         return '$baseUrl/surah/$surahNumber/$enEdition';
+      case Edition.arabic:
+        return '$baseUrl/surah/$surahNumber';
     }
-  }
-
-  static String getArabicSurahUrl({required String surahNumber}) {
-    return '$baseUrl/surah/$surahNumber';
   }
 }

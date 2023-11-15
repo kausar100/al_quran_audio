@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReadSurah extends StatefulWidget {
   static const routeReadSurah = '/read_surah_page';
+
   const ReadSurah({super.key});
 
   @override
@@ -15,19 +16,20 @@ class ReadSurah extends StatefulWidget {
 }
 
 class _ReadSurahState extends State<ReadSurah> {
-  final AyatBloc _ayatBloc = AyatBloc();
   bool hit = false;
 
-  _fetchData(int surahNumber, Edition language) {
-    _ayatBloc.getSingleSurah(surahNumber, language);
+  _fetchData(AyatBloc bloc, int surahNumber, Edition language) {
+    hit = true;
+    bloc.getSingleSurah(surahNumber, language);
   }
 
   @override
   Widget build(BuildContext context) {
+    final _ayatBloc = BlocProvider.of<AyatBloc>(context, listen: true);
     final args = ModalRoute.of(context)!.settings.arguments as SurahInfo;
+
     if (!hit) {
-      hit = false;
-      _fetchData(args.surah.number!, args.translationLanguage);
+      _fetchData(_ayatBloc, args.surah.number!, args.translationLanguage);
     }
 
     const String bismillahArabic = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ";
@@ -37,7 +39,7 @@ class _ReadSurahState extends State<ReadSurah> {
     return Scaffold(
       appBar: AppBar(title: Text(args.surah.englishName.toString())),
       body: Center(
-        child: BlocBuilder(
+        child: BlocBuilder<AyatBloc, AyatState>(
             bloc: _ayatBloc,
             builder: (context, state) {
               if (state is LoadingAyatState || state is InitialAyatState) {
@@ -73,9 +75,7 @@ class _ReadSurahState extends State<ReadSurah> {
                           itemCount: args.surah.numberOfAyahs,
                           itemBuilder: (context, index) {
                             final ayat = state.ayats.elementAt(index);
-                            final ayatArabic =
-                                state.ayatsArabic.elementAt(index);
-                            return ShowAyat(ayat: ayat, ayatArabic: ayatArabic);
+                            return ShowAyat(ayat: ayat);
                           })
                     ],
                   ),
@@ -92,10 +92,9 @@ class _ReadSurahState extends State<ReadSurah> {
 }
 
 class ShowAyat extends StatelessWidget {
-  const ShowAyat({super.key, required this.ayat, required this.ayatArabic});
+  const ShowAyat({super.key, required this.ayat});
 
   final Ayat ayat;
-  final Ayat ayatArabic;
 
   ayatWithNumber(String msg) {
     return '(${ayat.numberInSurah}) $msg';
@@ -106,16 +105,16 @@ class ShowAyat extends StatelessWidget {
   }
 
   getAyat() {
-    if (ayatArabic.numberInSurah == 1 &&
-        ayatArabic.number != 1 &&
-        ayatArabic.number != 1236) {
+    if (ayat.numberInSurah == 1 &&
+        ayat.number != 1 &&
+        ayat.number != 1236) {
       //need to fetch removing bismillah
-      if (ayatArabic.text != null) {
-        final msg = ayatArabic.text!.substring(40, ayatArabic.text!.length - 1);
+      if (ayat.arabic != null) {
+        final msg = ayat.arabic!.substring(40,ayat.arabic!.length - 1);
         return dropNewLine(msg);
       }
     } else {
-      return dropNewLine(ayatArabic.text!);
+      return dropNewLine(ayat.arabic!);
     }
   }
 

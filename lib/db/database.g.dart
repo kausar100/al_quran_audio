@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `SurahEntity` (`number` INTEGER, `englishName` TEXT, `englishNameTranslation` TEXT, `numberOfAyahs` INTEGER, PRIMARY KEY (`number`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `AyatEntity` (`surahNumber` INTEGER, `textBangla` TEXT, `textArabic` TEXT, `numberInSurah` INTEGER, PRIMARY KEY (`surahNumber`))');
+            'CREATE TABLE IF NOT EXISTS `AyatEntity` (`ayatNumber` INTEGER, `surahNumber` INTEGER, `textEdition` TEXT, `textArabic` TEXT, `numberInSurah` INTEGER, PRIMARY KEY (`ayatNumber`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -119,8 +119,9 @@ class _$SurahDao extends SurahDao {
             database,
             'AyatEntity',
             (AyatEntity item) => <String, Object?>{
+                  'ayatNumber': item.ayatNumber,
                   'surahNumber': item.surahNumber,
-                  'textBangla': item.textBangla,
+                  'textEdition': item.textEdition,
                   'textArabic': item.textArabic,
                   'numberInSurah': item.numberInSurah
                 });
@@ -149,45 +150,35 @@ class _$SurahDao extends SurahDao {
   Future<List<AyatEntity>?> getAllAyat() async {
     return _queryAdapter.queryList('SELECT * FROM AyatEntity',
         mapper: (Map<String, Object?> row) => AyatEntity(
+            ayatNumber: row['ayatNumber'] as int?,
             surahNumber: row['surahNumber'] as int?,
-            textBangla: row['textBangla'] as String?,
+            textEdition: row['textEdition'] as String?,
             textArabic: row['textArabic'] as String?,
             numberInSurah: row['numberInSurah'] as int?));
   }
 
   @override
-  Future<List<AyatEntity>?> getBanglaSurahByNumber(int number) async {
+  Future<List<AyatEntity>?> getSurahTranslationByNumber(int number) async {
     return _queryAdapter.queryList(
         'SELECT * FROM AyatEntity WHERE surahNumber = ?1',
         mapper: (Map<String, Object?> row) => AyatEntity(
+            ayatNumber: row['ayatNumber'] as int?,
             surahNumber: row['surahNumber'] as int?,
-            textBangla: row['textBangla'] as String?,
+            textEdition: row['textEdition'] as String?,
             textArabic: row['textArabic'] as String?,
             numberInSurah: row['numberInSurah'] as int?),
         arguments: [number]);
   }
 
   @override
-  Future<List<AyatEntity>?> getArabicSurahByNumber(int number) async {
-    return _queryAdapter.queryList(
-        'SELECT * FROM AyatEntity WHERE surahNumber = ?1',
-        mapper: (Map<String, Object?> row) => AyatEntity(
-            surahNumber: row['surahNumber'] as int?,
-            textBangla: row['textBangla'] as String?,
-            textArabic: row['textArabic'] as String?,
-            numberInSurah: row['numberInSurah'] as int?),
-        arguments: [number]);
-  }
-
-  @override
-  Future<void> insertSurahInfo(List<SurahEntity> surahEntity) async {
+  Future<void> insertSurahInfo(List<SurahEntity> infos) async {
     await _surahEntityInsertionAdapter.insertList(
-        surahEntity, OnConflictStrategy.abort);
+        infos, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> insertSurahAyat(List<AyatEntity> ayatEntity) async {
+  Future<void> insertSurahAyat(List<AyatEntity> ayats) async {
     await _ayatEntityInsertionAdapter.insertList(
-        ayatEntity, OnConflictStrategy.abort);
+        ayats, OnConflictStrategy.abort);
   }
 }

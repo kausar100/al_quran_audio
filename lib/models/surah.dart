@@ -22,15 +22,4 @@ class Surah {
     numberOfAyahs = json['numberOfAyahs'];
     revelationType = json['revelationType'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['number'] = number;
-    data['name'] = name;
-    data['englishName'] = englishName;
-    data['englishNameTranslation'] = englishNameTranslation;
-    data['numberOfAyahs'] = numberOfAyahs;
-    data['revelationType'] = revelationType;
-    return data;
-  }
 }

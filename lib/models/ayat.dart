@@ -1,6 +1,7 @@
 class Ayat {
   int? number;
   String? text;
+  String? arabic;
   int? numberInSurah;
   int? juz;
   int? manzil;
@@ -12,6 +13,7 @@ class Ayat {
   Ayat({
     this.number,
     this.text,
+    this.arabic,
     this.numberInSurah,
     this.juz,
     this.manzil,
@@ -24,6 +26,7 @@ class Ayat {
   Ayat.fromJson(Map<String, dynamic> json) {
     number = json.containsKey('number') ? json['number'] : null;
     text = json.containsKey('text') ? json['text'] : null;
+    arabic = null;
     numberInSurah =
         json.containsKey('numberInSurah') ? json['numberInSurah'] : null;
     juz = json.containsKey('juz') ? json['juz'] : null;
@@ -32,19 +35,5 @@ class Ayat {
     ruku = json.containsKey('marukunzil') ? json['ruku'] : null;
     hizbQuarter = json.containsKey('hizbQuarter') ? json['hizbQuarter'] : null;
     // sajda = json.containsKey('sajda') ? json['sajda'] : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['number'] = number;
-    data['text'] = text;
-    data['numberInSurah'] = numberInSurah;
-    data['juz'] = juz;
-    data['manzil'] = manzil;
-    data['page'] = page;
-    data['ruku'] = ruku;
-    data['hizbQuarter'] = hizbQuarter;
-    // data['sajda'] = sajda;
-    return data;
   }
 }

@@ -8,9 +8,8 @@ class LoadingAyatState extends AyatState {}
 
 class LoadedAyatState extends AyatState {
   final List<Ayat> ayats;
-  final List<Ayat> ayatsArabic;
 
-  LoadedAyatState({required this.ayats, required this.ayatsArabic});
+  LoadedAyatState({required this.ayats});
 }
 
 class ErrorAyatState extends AyatState {

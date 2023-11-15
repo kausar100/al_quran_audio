@@ -11,10 +11,7 @@ abstract class SurahDao{
   Future<List<AyatEntity>?> getAllAyat();
 
   @Query('SELECT * FROM AyatEntity WHERE surahNumber = :number')
-  Future<List<AyatEntity>?> getBanglaSurahByNumber(int number);
-
-  @Query('SELECT * FROM AyatEntity WHERE surahNumber = :number')
-  Future<List<AyatEntity>?> getArabicSurahByNumber(int number);
+  Future<List<AyatEntity>?> getSurahTranslationByNumber(int number);
 
   @insert
   Future<void> insertSurahInfo(List<SurahEntity> infos);

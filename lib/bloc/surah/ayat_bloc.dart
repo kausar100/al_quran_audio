@@ -11,12 +11,15 @@ class AyatBloc extends Cubit<AyatState> {
   getSingleSurah(int surahNumber, Edition language) async {
     emit(LoadingAyatState());
     try {
-      final ayatsArabic = await apiRepo.getArabicSurahByNumber(surahNumber);
       final ayats = await apiRepo.getSurahByNumber(surahNumber, language);
-      if (ayats == null && ayatsArabic == null) {
+      if (ayats == null) {
         emit(ErrorAyatState(message: 'Error occurred during fetching data...'));
       } else {
-        emit(LoadedAyatState(ayats: ayats!, ayatsArabic: ayatsArabic!));
+        if(ayats[0].arabic==null){
+          print('arabic data error');
+        }else{
+          emit(LoadedAyatState(ayats: ayats));
+        }
       }
     } catch (e) {
       emit(ErrorAyatState(message: e.toString()));

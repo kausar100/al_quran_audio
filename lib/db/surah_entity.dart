@@ -20,14 +20,16 @@ class SurahEntity {
 @entity
 class AyatEntity {
   @primaryKey
+  int? ayatNumber;
   int? surahNumber;
-  String? textBangla;
+  String? textEdition;
   String? textArabic;
   int? numberInSurah;
 
   AyatEntity({
+    this.ayatNumber,
     this.surahNumber,
-    this.textBangla,
+    this.textEdition,
     this.textArabic,
     this.numberInSurah,
   });
