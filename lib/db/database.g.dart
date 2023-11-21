@@ -85,9 +85,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `SurahEntity` (`number` INTEGER, `englishName` TEXT, `englishNameTranslation` TEXT, `numberOfAyahs` INTEGER, PRIMARY KEY (`number`))');
+            'CREATE TABLE IF NOT EXISTS `SurahEntity` (`number` INTEGER, `englishName` TEXT, `englishNameTranslation` TEXT, `numberOfAyahs` INTEGER, `audio` TEXT, `revelationType` TEXT, PRIMARY KEY (`number`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `AyatEntity` (`ayatNumber` INTEGER, `surahNumber` INTEGER, `textEdition` TEXT, `textArabic` TEXT, `numberInSurah` INTEGER, PRIMARY KEY (`ayatNumber`))');
+            'CREATE TABLE IF NOT EXISTS `AyatEntity` (`ayatNumberInQuran` INTEGER, `surahNumber` INTEGER, `textEdition` TEXT, `textArabic` TEXT, `numberInSurah` INTEGER, PRIMARY KEY (`ayatNumberInQuran`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -113,13 +113,15 @@ class _$SurahDao extends SurahDao {
                   'number': item.number,
                   'englishName': item.englishName,
                   'englishNameTranslation': item.englishNameTranslation,
-                  'numberOfAyahs': item.numberOfAyahs
+                  'numberOfAyahs': item.numberOfAyahs,
+                  'audio': item.audio,
+                  'revelationType': item.revelationType
                 }),
         _ayatEntityInsertionAdapter = InsertionAdapter(
             database,
             'AyatEntity',
             (AyatEntity item) => <String, Object?>{
-                  'ayatNumber': item.ayatNumber,
+                  'ayatNumberInQuran': item.ayatNumberInQuran,
                   'surahNumber': item.surahNumber,
                   'textEdition': item.textEdition,
                   'textArabic': item.textArabic,
@@ -143,14 +145,16 @@ class _$SurahDao extends SurahDao {
             number: row['number'] as int?,
             englishName: row['englishName'] as String?,
             englishNameTranslation: row['englishNameTranslation'] as String?,
-            numberOfAyahs: row['numberOfAyahs'] as int?));
+            numberOfAyahs: row['numberOfAyahs'] as int?,
+            audio: row['audio'] as String?,
+            revelationType: row['revelationType'] as String?));
   }
 
   @override
   Future<List<AyatEntity>?> getAllAyat() async {
     return _queryAdapter.queryList('SELECT * FROM AyatEntity',
         mapper: (Map<String, Object?> row) => AyatEntity(
-            ayatNumber: row['ayatNumber'] as int?,
+            ayatNumberInQuran: row['ayatNumberInQuran'] as int?,
             surahNumber: row['surahNumber'] as int?,
             textEdition: row['textEdition'] as String?,
             textArabic: row['textArabic'] as String?,
@@ -162,7 +166,7 @@ class _$SurahDao extends SurahDao {
     return _queryAdapter.queryList(
         'SELECT * FROM AyatEntity WHERE surahNumber = ?1',
         mapper: (Map<String, Object?> row) => AyatEntity(
-            ayatNumber: row['ayatNumber'] as int?,
+            ayatNumberInQuran: row['ayatNumberInQuran'] as int?,
             surahNumber: row['surahNumber'] as int?,
             textEdition: row['textEdition'] as String?,
             textArabic: row['textArabic'] as String?,

@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 
       child: MaterialApp(
           title: 'Al Quran Audio',
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primarySwatch: Colors.green
           ),

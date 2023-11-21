@@ -7,12 +7,16 @@ class SurahEntity {
   String? englishName;
   String? englishNameTranslation;
   int? numberOfAyahs;
+  String? audio;
+  String? revelationType;
 
   SurahEntity({
     this.number,
     this.englishName,
     this.englishNameTranslation,
     this.numberOfAyahs,
+    this.audio,
+    this.revelationType
   });
 
 }
@@ -20,14 +24,14 @@ class SurahEntity {
 @entity
 class AyatEntity {
   @primaryKey
-  int? ayatNumber;
+  int? ayatNumberInQuran;
   int? surahNumber;
   String? textEdition;
   String? textArabic;
   int? numberInSurah;
 
   AyatEntity({
-    this.ayatNumber,
+    this.ayatNumberInQuran,
     this.surahNumber,
     this.textEdition,
     this.textArabic,

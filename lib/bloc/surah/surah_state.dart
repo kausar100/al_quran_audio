@@ -1,3 +1,4 @@
+import 'package:al_quran_audio/models/audio_quran.dart';
 import 'package:al_quran_audio/models/surah.dart';
 
 abstract class SurahState {}
@@ -7,9 +8,9 @@ class InitialSurahState extends SurahState {}
 class LoadingSurahState extends SurahState {}
 
 class LoadedSurahState extends SurahState {
-  final List<Surah> listOfSurah;
+  final List<AudioQuran> fullQuran;
 
-  LoadedSurahState({required this.listOfSurah});
+  LoadedSurahState({required this.fullQuran});
 }
 
 class SavedSurahState extends SurahState {

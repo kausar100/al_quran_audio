@@ -10,12 +10,12 @@ class SurahBloc extends Cubit<SurahState> {
   getSurahInfo() async {
     emit(LoadingSurahState());
     try {
-      final surah = await apiRepo.getAllSurah();
-      if (surah == null) {
+      final quran = await apiRepo.getAllSurah();
+      if (quran == null) {
         emit(
             ErrorSurahState(message: 'Error occurred during fetching data...'));
       } else {
-        emit(LoadedSurahState(listOfSurah: surah));
+        emit(LoadedSurahState(fullQuran: quran));
       }
     } catch (e) {
       emit(ErrorSurahState(message: e.toString()));

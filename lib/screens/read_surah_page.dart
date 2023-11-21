@@ -29,7 +29,7 @@ class _ReadSurahState extends State<ReadSurah> {
     final args = ModalRoute.of(context)!.settings.arguments as SurahInfo;
 
     if (!hit) {
-      _fetchData(_ayatBloc, args.surah.number!, args.translationLanguage);
+      _fetchData(_ayatBloc, args.info.number!, args.translationLanguage);
     }
 
     const String bismillahArabic = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ";
@@ -37,7 +37,7 @@ class _ReadSurahState extends State<ReadSurah> {
         "শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।";
 
     return Scaffold(
-      appBar: AppBar(title: Text(args.surah.englishName.toString())),
+      appBar: AppBar(title: Text(args.info.englishName.toString())),
       body: Center(
         child: BlocBuilder<AyatBloc, AyatState>(
             bloc: _ayatBloc,
@@ -50,7 +50,7 @@ class _ReadSurahState extends State<ReadSurah> {
                   physics: const ScrollPhysics(),
                   child: Column(
                     children: [
-                      (args.surah.number! != 1 && args.surah.number != 9)
+                      (args.info.number! != 1 && args.info.number != 9)
                           ?
                           //surah fatiha && surah touba
                           //attach bismillah
@@ -72,7 +72,7 @@ class _ReadSurahState extends State<ReadSurah> {
                       ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: args.surah.numberOfAyahs,
+                          itemCount: args.info.ayahs!.length,
                           itemBuilder: (context, index) {
                             final ayat = state.ayats.elementAt(index);
                             return ShowAyat(ayat: ayat);
@@ -105,12 +105,10 @@ class ShowAyat extends StatelessWidget {
   }
 
   getAyat() {
-    if (ayat.numberInSurah == 1 &&
-        ayat.number != 1 &&
-        ayat.number != 1236) {
+    if (ayat.numberInSurah == 1 && ayat.number != 1 && ayat.number != 1236) {
       //need to fetch removing bismillah
       if (ayat.arabic != null) {
-        final msg = ayat.arabic!.substring(40,ayat.arabic!.length - 1);
+        final msg = ayat.arabic!.substring(40, ayat.arabic!.length - 1);
         return dropNewLine(msg);
       }
     } else {
@@ -127,16 +125,11 @@ class ShowAyat extends StatelessWidget {
         child: Card(
           elevation: 2.0,
           child: ListTile(
-            trailing: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.green.shade100,
-                    ),
-                    shape: BoxShape.circle),
+            trailing: CircleAvatar(
+                backgroundColor: Colors.green.shade50,
                 child: Text(ayat.numberInSurah.toString())),
-            title:
-                Text(getAyat(), textAlign: TextAlign.end, textScaleFactor: 2.0),
+            title: Text(getAyat(),
+                textDirection: TextDirection.rtl, textScaleFactor: 2.0),
             subtitle: Text('(${ayat.numberInSurah}) ${ayat.text}',
                 textAlign: TextAlign.justify),
           ),

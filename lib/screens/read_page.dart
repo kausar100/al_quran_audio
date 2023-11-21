@@ -1,6 +1,7 @@
 import 'package:al_quran_audio/bloc/surah/ayat_bloc.dart';
 import 'package:al_quran_audio/bloc/surah/surah_bloc.dart';
 import 'package:al_quran_audio/bloc/surah/surah_state.dart';
+import 'package:al_quran_audio/models/audio_quran.dart';
 import 'package:al_quran_audio/models/surah.dart';
 import 'package:al_quran_audio/models/surah_info.dart';
 import 'package:al_quran_audio/screens/read_surah_page.dart';
@@ -19,10 +20,10 @@ class Reading extends StatefulWidget {
 }
 
 class _ReadingState extends State<Reading> {
-  _gotoReadPage(int surahNumber, Surah surah) {
+  _gotoReadPage(int surahNumber, AudioQuran quran) {
     Navigator.pushNamed(context, ReadSurah.routeReadSurah,
         arguments:
-            SurahInfo(translationLanguage: Edition.bangla, surah: surah));
+            SurahInfo(translationLanguage: Edition.bangla, info: quran));
   }
 
   @override
@@ -43,10 +44,10 @@ class _ReadingState extends State<Reading> {
               }
               if (state is LoadedSurahState) {
                 return ListWidget(
-                  surahInfo: state.listOfSurah,
+                  surahInfo: state.fullQuran,
                   onTap: (id) {
                     // print('surah number : ${id + 1}');
-                    _gotoReadPage(id, state.listOfSurah.elementAt(id));
+                    _gotoReadPage(id, state.fullQuran.elementAt(id));
                   },
                 );
               }
