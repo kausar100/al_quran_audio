@@ -29,25 +29,13 @@ class AudioQuran {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['number'] = number;
-    data['name'] = name;
-    data['englishName'] = englishName;
-    data['englishNameTranslation'] = englishNameTranslation;
-    data['revelationType'] = revelationType;
-    if (ayahs != null) {
-      data['ayahs'] = ayahs!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class Ayahs {
   int? number;
   String? audio;
   String? text;
+  String? arabic;
   int? numberInSurah;
   // int? juz;
   // int? manzil;
@@ -60,6 +48,7 @@ class Ayahs {
       {this.number,
         this.audio,
         this.text,
+        this.arabic,
         this.numberInSurah,
         // this.juz,
         // this.manzil,
@@ -73,6 +62,7 @@ class Ayahs {
     number = json['number'];
     audio = json['audio'];
     text = json['text'];
+    arabic = null;
     numberInSurah = json['numberInSurah'];
     // juz = json['juz'];
     // manzil = json['manzil'];
@@ -80,20 +70,5 @@ class Ayahs {
     // ruku = json['ruku'];
     // hizbQuarter = json['hizbQuarter'];
     // sajda = json['sajda'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['number'] = number;
-    data['audio'] = audio;
-    data['text'] = text;
-    data['numberInSurah'] = numberInSurah;
-    // data['juz'] = this.juz;
-    // data['manzil'] = this.manzil;
-    // data['page'] = this.page;
-    // data['ruku'] = this.ruku;
-    // data['hizbQuarter'] = this.hizbQuarter;
-    // data['sajda'] = this.sajda;
-    return data;
   }
 }

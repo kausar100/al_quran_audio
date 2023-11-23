@@ -3,16 +3,12 @@ import 'package:al_quran_audio/db/database.dart';
 import 'package:al_quran_audio/db/surah_dao.dart';
 import 'package:al_quran_audio/db/surah_entity.dart';
 import 'package:al_quran_audio/models/audio_quran.dart';
-import 'package:al_quran_audio/models/ayat.dart';
-import 'package:al_quran_audio/models/surah.dart';
 import 'package:al_quran_audio/services/api_call.dart';
 import 'package:al_quran_audio/services/api_constant.dart';
 import 'package:al_quran_audio/utils/extension_helper.dart';
-import 'package:al_quran_audio/utils/helper.dart';
 
 class APIRepository {
   final apiCall = APICall();
-  final helper = Helper();
 
   Future<List<AudioQuran>?> getAllSurah() async {
     try {
@@ -23,12 +19,23 @@ class APIRepository {
       final info = await dao.getSurahInfo();
       if (info != null) {
         if (info.isNotEmpty && info.length == 114) {
+          //get all surah
           List<AudioQuran> surahs = [];
           for (SurahEntity entity in info) {
-            final surah = entity.toSurah();
+            var surah = entity.toSurah();
+            //get surah ayat
+            final ayats = await dao.getSurahTranslationByNumber(entity.number!);
+            if (ayats != null && ayats.isNotEmpty) {
+              List<Ayahs> ayahs = [];
+              for (AyatEntity ayat in ayats) {
+                final ayah = ayat.toAyaths();
+                ayahs.add(ayah);
+              }
+              surah.ayahs = ayahs;
+            }
             surahs.add(surah);
           }
-          // print('data is fetched from db successfully!');
+          print('data is fetched from db successfully!');
           return surahs;
         } else {
           return getSurahInfo(dao);
@@ -49,8 +56,10 @@ class APIRepository {
 
         final info = data.map((s) => AudioQuran.fromJson(s)).toList();
         //save to local database
-        _storeSurahInfoToDB(info, dao);
-        // print('data is fetched from internet successfully!');
+        await _storeSurahInfoToDB(info, dao);
+
+        await _storeSurahAyatsToDB(info, dao);
+        print('data is fetched from internet successfully!');
         return info;
       }
     } catch (e) {
@@ -60,7 +69,7 @@ class APIRepository {
     return null;
   }
 
-  Future<List<Ayat>?> getSurahByNumber(int number, Edition language) async {
+  Future<List<Ayahs>?> getSurahByNumber(int number, Edition language) async {
     try {
       final db =
           await $FloorAppDatabase.databaseBuilder('surah_database.db').build();
@@ -72,12 +81,12 @@ class APIRepository {
       //check if data exist or not
       if (translation != null) {
         if (translation.isNotEmpty) {
-          List<Ayat> ayats = [];
+          List<Ayahs> ayats = [];
           for (AyatEntity entity in translation) {
-            final ayat = entity.toAyat();
+            final ayat = entity.toAyaths();
             ayats.add(ayat);
           }
-          // print('data is fetched from db successfully!');
+          print('data is fetched from db successfully!');
           return ayats;
         } else {
           //db empty so need to fetch from internet
@@ -100,16 +109,16 @@ class APIRepository {
     }
   }
 
-  Future<List<Ayat>?> getSurahTranslationByNumber(
+  Future<List<Ayahs>?> getSurahTranslationByNumber(
       int number, Edition language) async {
     try {
       final response = await apiCall.getSurahById(number, language);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data']['ayahs'] as List;
 
-        final ayats = data.map((s) => Ayat.fromJson(s)).toList();
+        final ayats = data.map((s) => Ayahs.fromJson(s)).toList();
 
-        // print('ayat is fetched from internet successfully!');
+        print('ayat is fetched from internet successfully!');
         return ayats;
       }
     } catch (e) {
@@ -124,47 +133,60 @@ class APIRepository {
     List<SurahEntity> entities = [];
     for (AudioQuran info in surahInfo) {
       //convert to surah entity
-      final audioUrl = "https://cdn.islamic.network/quran/audio/128/ar.alafasy/${info.number}.mp3";
+      final audioUrl =
+          "https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${info.number}.mp3";
       final entity = info.toSurahEntity(audioUrl);
       entities.add(entity);
     }
     await surahDao.insertSurahInfo(entities);
-    // print('data is saved successfully!');
+    print('data is saved successfully!');
   }
 
-  Future<void> _storeAyatToDB(
-      List<Ayat> ayats, int surahNumber, SurahDao surahDao) async {
-    List<AyatEntity> entities = [];
-    for (Ayat ayat in ayats) {
+  Future<List<Ayahs>> _storeAyatToDB(
+      List<Ayahs> ayats, int surahNumber, SurahDao surahDao) async {
+    List<Ayahs> ayahs = [];
+    for (Ayahs ayat in ayats) {
       //convert to surah entity
-      final entity = ayat.toAyatEntity(surahNumber);
-      entities.add(entity);
+      final withEdition = ayat.copyWith(ayat.text!);
+      ayahs.add(withEdition);
+      await surahDao.updateSurahAyat(ayat.text!, surahNumber);
     }
-    await surahDao.insertSurahAyat(entities);
-    // print('ayat is saved to db successfully!');
+
+    return ayahs;
+    print('ayat is saved to db successfully!');
   }
 
-  Future<List<Ayat>> fetchDataAndStoreToDB(
+  Future<List<Ayahs>> fetchDataAndStoreToDB(
       int number, Edition language, dao) async {
     try {
-      List<Ayat>? editionTranslation =
+      List<Ayahs>? editionTranslation =
           await getSurahTranslationByNumber(number, language);
-      List<Ayat>? arabicEdition =
-          await getSurahTranslationByNumber(number, Edition.arabic);
 
-      if (editionTranslation != null && arabicEdition != null) {
-        //merge two and store to db
-        final ayats =
-             helper.mergedAyatList(editionTranslation, arabicEdition);
-
+      if (editionTranslation != null) {
         //store to db
-        await _storeAyatToDB(ayats, number, dao);
+        final ayats = await _storeAyatToDB(editionTranslation, number, dao);
         return ayats;
       } else {
         throw Exception("Failed to get data");
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> _storeSurahAyatsToDB(List<AudioQuran> info, SurahDao dao) async {
+    for (AudioQuran surah in info) {
+      List<AyatEntity> entities = [];
+      final ayats = surah.ayahs!;
+
+      for (Ayahs ayat in ayats) {
+        //convert to surah entity
+        final entity = ayat.toAyatEntity(surah.number!);
+        entities.add(entity);
+      }
+
+      await dao.insertSurahAyat(entities);
+      print('${surah.number}.${surah.name} ayats is inserted in db');
     }
   }
 }

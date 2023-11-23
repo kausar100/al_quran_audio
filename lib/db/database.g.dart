@@ -175,6 +175,16 @@ class _$SurahDao extends SurahDao {
   }
 
   @override
+  Future<void> updateSurahAyat(
+    String translation,
+    int surahNumber,
+  ) async {
+    await _queryAdapter.queryNoReturn(
+        'UPDATE AyatEntity SET textEdition = ?1  WHERE surahNumber = ?2',
+        arguments: [translation, surahNumber]);
+  }
+
+  @override
   Future<void> insertSurahInfo(List<SurahEntity> infos) async {
     await _surahEntityInsertionAdapter.insertList(
         infos, OnConflictStrategy.abort);

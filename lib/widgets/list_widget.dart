@@ -1,5 +1,4 @@
 import 'package:al_quran_audio/models/audio_quran.dart';
-import 'package:al_quran_audio/models/surah.dart';
 import 'package:flutter/material.dart';
 
 class ListWidget extends StatelessWidget {

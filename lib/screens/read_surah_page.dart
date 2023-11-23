@@ -1,8 +1,7 @@
 import 'package:al_quran_audio/bloc/surah/ayat_bloc.dart';
 import 'package:al_quran_audio/bloc/surah/ayat_state.dart';
-import 'package:al_quran_audio/models/ayat.dart';
+import 'package:al_quran_audio/models/audio_quran.dart';
 import 'package:al_quran_audio/models/surah_info.dart';
-import 'package:al_quran_audio/services/api_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,9 +17,9 @@ class ReadSurah extends StatefulWidget {
 class _ReadSurahState extends State<ReadSurah> {
   bool hit = false;
 
-  _fetchData(AyatBloc bloc, int surahNumber, Edition language) {
+  _fetchData(AyatBloc bloc, AudioQuran info) {
     hit = true;
-    bloc.getSingleSurah(surahNumber, language);
+    bloc.getSingleSurah(info);
   }
 
   @override
@@ -29,7 +28,7 @@ class _ReadSurahState extends State<ReadSurah> {
     final args = ModalRoute.of(context)!.settings.arguments as SurahInfo;
 
     if (!hit) {
-      _fetchData(_ayatBloc, args.info.number!, args.translationLanguage);
+      _fetchData(_ayatBloc, args.info);
     }
 
     const String bismillahArabic = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ";
@@ -69,10 +68,11 @@ class _ReadSurahState extends State<ReadSurah> {
                               ),
                             )
                           : const SizedBox.shrink(),
+
                       ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: args.info.ayahs!.length,
+                          itemCount: state.ayats.length,
                           itemBuilder: (context, index) {
                             final ayat = state.ayats.elementAt(index);
                             return ShowAyat(ayat: ayat);
@@ -88,13 +88,14 @@ class _ReadSurahState extends State<ReadSurah> {
             }),
       ),
     );
+
   }
 }
 
 class ShowAyat extends StatelessWidget {
   const ShowAyat({super.key, required this.ayat});
 
-  final Ayat ayat;
+  final Ayahs ayat;
 
   ayatWithNumber(String msg) {
     return '(${ayat.numberInSurah}) $msg';

@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'screens/home_page.dart';
 
 void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
             AppView.routeHomePage: (context) => const AppView(),
             Reading.routeReading: (context) => const Reading(),
             Listening.routeListening: (context) => const Listening(),
-            ReadSurah.routeReadSurah: (context) => const ReadSurah()
+            ReadSurah.routeReadSurah: (context) => const ReadSurah(),
           }),
     );
   }

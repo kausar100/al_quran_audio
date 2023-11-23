@@ -1,8 +1,6 @@
-import 'package:al_quran_audio/bloc/surah/ayat_bloc.dart';
 import 'package:al_quran_audio/bloc/surah/surah_bloc.dart';
 import 'package:al_quran_audio/bloc/surah/surah_state.dart';
 import 'package:al_quran_audio/models/audio_quran.dart';
-import 'package:al_quran_audio/models/surah.dart';
 import 'package:al_quran_audio/models/surah_info.dart';
 import 'package:al_quran_audio/screens/read_surah_page.dart';
 import 'package:al_quran_audio/services/api_constant.dart';

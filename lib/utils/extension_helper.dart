@@ -1,6 +1,5 @@
 import 'package:al_quran_audio/db/surah_entity.dart';
 import 'package:al_quran_audio/models/audio_quran.dart';
-import 'package:al_quran_audio/models/ayat.dart';
 
 extension ToSurahEntity on AudioQuran {
   SurahEntity toSurahEntity(String audioUrl) {
@@ -25,25 +24,36 @@ extension ToAudioQuran on SurahEntity {
   }
 }
 
-extension ConvertToEntity on Ayat {
-  AyatEntity toAyatEntity(int surahNumber) {
+extension AyahstoAyatEntity on Ayahs{
+  AyatEntity toAyatEntity(int surahNumber){
     return AyatEntity(
       ayatNumberInQuran: number,
       surahNumber: surahNumber,
-      textEdition: text,
-      textArabic: arabic,
+      textArabic: text,
       numberInSurah: numberInSurah,
+    );
+  }
+
+  Ayahs copyWith(String edition){
+    return Ayahs(
+      number: number,
+      audio: audio,
+      text: edition,
+      arabic: arabic,
+      numberInSurah: numberInSurah
     );
   }
 }
 
-extension ConvertToAyat on AyatEntity {
-  Ayat toAyat() {
-    return Ayat(
+
+
+extension AyatEntityToAyahs on AyatEntity{
+  Ayahs toAyaths(){
+    return Ayahs(
       number: ayatNumberInQuran,
-      numberInSurah: numberInSurah,
       text: textEdition,
       arabic: textArabic,
+      numberInSurah: numberInSurah,
     );
   }
 }
