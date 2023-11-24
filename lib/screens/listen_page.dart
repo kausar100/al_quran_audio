@@ -70,14 +70,14 @@ class ShowSurahDetails extends StatefulWidget {
 }
 
 class _ShowSurahDetailsState extends State<ShowSurahDetails> {
-  WebViewController controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(Colors.black);
+  late WebViewController controller;
 
   @override
   void initState() {
-    print(widget.surah.audio.toString());
-    controller.loadRequest(Uri.parse(widget.surah.audio.toString()));
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.black)
+      ..loadRequest(Uri.parse(widget.surah.audio.toString()));
     super.initState();
   }
 
@@ -94,44 +94,48 @@ class _ShowSurahDetailsState extends State<ShowSurahDetails> {
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.surah.englishName.toString()), centerTitle: true),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-                height: 220,
-                width: double.infinity,
-                child: WebViewWidget(
-                  controller: controller,
-                )),
-            Divider(
-                thickness: 16.0, color: Colors.green.shade300, height: 16.0),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: ayats.length,
-                  itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: Colors.green.shade100,
-                          child: ListTile(
-                            trailing: CircleAvatar(
-                                backgroundColor: Colors.green.shade300,
-                                foregroundColor: Colors.white,
-                                child: Text(
-                                  ayats[index].numberInSurah.toString(),
-                                  textScaleFactor: 1,
-                                )),
-                            title: Text(
-                              ayats[index].arabic.toString(),
-                              textDirection: TextDirection.rtl,
-                              textScaleFactor: 2,
-                            ),
-                          ),
-                        ),
+      body: widget.surah.audio == null
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                      height: 220,
+                      width: double.infinity,
+                      child: WebViewWidget(
+                        controller: controller,
                       )),
+                  Divider(
+                      thickness: 16.0,
+                      color: Colors.green.shade300,
+                      height: 16.0),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: ayats.length,
+                        itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                color: Colors.green.shade100,
+                                child: ListTile(
+                                  trailing: CircleAvatar(
+                                      backgroundColor: Colors.green.shade300,
+                                      foregroundColor: Colors.white,
+                                      child: Text(
+                                        ayats[index].numberInSurah.toString(),
+                                        textScaleFactor: 1,
+                                      )),
+                                  title: Text(
+                                    ayats[index].arabic.toString(),
+                                    textDirection: TextDirection.rtl,
+                                    textScaleFactor: 2,
+                                  ),
+                                ),
+                              ),
+                            )),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

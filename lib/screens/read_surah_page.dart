@@ -2,6 +2,7 @@ import 'package:al_quran_audio/bloc/surah/ayat_bloc.dart';
 import 'package:al_quran_audio/bloc/surah/ayat_state.dart';
 import 'package:al_quran_audio/models/audio_quran.dart';
 import 'package:al_quran_audio/models/surah_info.dart';
+import 'package:al_quran_audio/services/api_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,9 +18,9 @@ class ReadSurah extends StatefulWidget {
 class _ReadSurahState extends State<ReadSurah> {
   bool hit = false;
 
-  _fetchData(AyatBloc bloc, AudioQuran info) {
+  _fetchData(AyatBloc bloc, AudioQuran info, Edition language) {
     hit = true;
-    bloc.getSingleSurah(info);
+    bloc.getSingleSurah(info, language);
   }
 
   @override
@@ -28,7 +29,7 @@ class _ReadSurahState extends State<ReadSurah> {
     final args = ModalRoute.of(context)!.settings.arguments as SurahInfo;
 
     if (!hit) {
-      _fetchData(_ayatBloc, args.info);
+      _fetchData(_ayatBloc, args.info, args.translationLanguage);
     }
 
     const String bismillahArabic = "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ";

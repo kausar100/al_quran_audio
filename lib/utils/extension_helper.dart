@@ -34,6 +34,15 @@ extension AyahstoAyatEntity on Ayahs{
     );
   }
 
+  Ayahs withArabic(){
+    return Ayahs(
+        number: number,
+        audio: audio,
+        arabic: text,
+        numberInSurah: numberInSurah
+    );
+  }
+
   Ayahs copyWith(String edition){
     return Ayahs(
       number: number,

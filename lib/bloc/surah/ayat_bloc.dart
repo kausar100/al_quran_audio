@@ -9,17 +9,22 @@ class AyatBloc extends Cubit<AyatState> {
 
   AyatBloc() : super(InitialAyatState());
 
-  getSingleSurah(AudioQuran info) async {
+  getSingleSurah(AudioQuran info, Edition language) async {
     emit(LoadingAyatState());
     try {
       final ayatsWithEdition = await apiRepo.getSurahByNumber(
-          info.number!, Edition.bangla);
+          info.number!, language);
       if (ayatsWithEdition == null) {
         emit(ErrorAyatState(message: 'Error occurred during fetching data...'));
       } else {
-        //merged with infoList and return back
-        List<Ayahs> ayats = _combineList(info.ayahs!, ayatsWithEdition);
-        emit(LoadedAyatState(ayats: ayats));
+        //merged with infoList and return back if not fetched from db
+        if(ayatsWithEdition[0].arabic!=null){
+          //fetch from db
+          emit(LoadedAyatState(ayats: ayatsWithEdition));
+        }else{
+          List<Ayahs> ayats = _combineList(info.ayahs!, ayatsWithEdition);
+          emit(LoadedAyatState(ayats: ayats));
+        }
       }
     } catch (e) {
       emit(ErrorAyatState(message: e.toString()));

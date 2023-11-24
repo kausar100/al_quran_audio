@@ -31,24 +31,58 @@ class _AppViewState extends State<AppView> {
       needToFetch = false;
       _getSurahInformation(bloc);
     }
-    return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'Read',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.headphones),
-            label: 'Listen',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green.shade900,
-        onTap: _onItemTapped,
+    return WillPopScope(
+      onWillPop: () async {
+        final value = await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: const Text('Are you sure you want to exit?'),
+                actions: [
+                  TextButton(
+                    child: const Text('No'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Yes, exit'),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              );
+            }
+        );
+        return value == true;
+      },
+      child: Scaffold(
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu_book),
+              label: 'Read',
+              backgroundColor: Colors.orange
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.headphones),
+              label: 'Listen',
+              backgroundColor: Colors.blue,
+
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green.shade900,
+          selectedFontSize: 16,
+          unselectedFontSize: 12,
+
+
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
