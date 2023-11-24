@@ -37,6 +37,7 @@ class _ReadSurahState extends State<ReadSurah> {
         "শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।";
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(title: Text(args.info.englishName.toString())),
       body: Center(
         child: BlocBuilder<AyatBloc, AyatState>(

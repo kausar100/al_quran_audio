@@ -1,20 +1,18 @@
-import 'package:al_quran_audio/bloc/surah/surah_bloc.dart';
 import 'package:al_quran_audio/screens/read_page.dart';
 import 'package:al_quran_audio/screens/listen_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AppView extends StatefulWidget {
+class MainPage extends StatefulWidget {
   static const routeHomePage = '/home_page';
-  const AppView({super.key});
+
+  const MainPage({super.key});
 
   @override
-  State<AppView> createState() => _AppViewState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _AppViewState extends State<AppView> {
+class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
-  bool needToFetch = true;
 
   static const List<Widget> _widgetOptions = <Widget>[Reading(), Listening()];
 
@@ -26,11 +24,6 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<SurahBloc>(context);
-    if(needToFetch){
-      needToFetch = false;
-      _getSurahInformation(bloc);
-    }
     return WillPopScope(
       onWillPop: () async {
         final value = await showDialog(
@@ -53,41 +46,36 @@ class _AppViewState extends State<AppView> {
                   ),
                 ],
               );
-            }
-        );
+            });
         return value == true;
       },
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book),
-              label: 'Read',
-              backgroundColor: Colors.orange
-            ),
+                icon: Icon(Icons.menu_book),
+                label: 'Read',
+                backgroundColor: Colors.orange),
             BottomNavigationBarItem(
               icon: Icon(Icons.headphones),
               label: 'Listen',
               backgroundColor: Colors.blue,
-
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.green.shade900,
           selectedFontSize: 16,
           unselectedFontSize: 12,
-
-
+          unselectedItemColor: Colors.white,
+          selectedItemColor: Colors.green,
+          selectedIconTheme: const IconThemeData(size: 32),
+          backgroundColor: Colors.transparent,
           onTap: _onItemTapped,
         ),
       ),
     );
-  }
-
-  _getSurahInformation(SurahBloc bloc) {
-    bloc.getSurahInfo();
   }
 }

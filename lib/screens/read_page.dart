@@ -28,6 +28,7 @@ class _ReadingState extends State<Reading> {
   Widget build(BuildContext context) {
     final surahBloc = BlocProvider.of<SurahBloc>(context, listen: true);
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Center(
         child: BlocConsumer<SurahBloc, SurahState>(
             bloc: surahBloc,
