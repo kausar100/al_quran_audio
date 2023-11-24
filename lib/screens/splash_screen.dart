@@ -20,18 +20,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<SurahBloc>(context, listen: true);
 
-    if(needToFetch){
+    if (needToFetch) {
       needToFetch = false;
       _getSurahInformation(bloc);
     }
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body:
-      Center(
+      body: Center(
         child: BlocConsumer<SurahBloc, SurahState>(
             bloc: bloc,
             listener: (context, state) {
-              if(state is LoadedSurahState){
+              if (state is LoadedSurahState) {
                 //go to home page
                 Navigator.pushReplacementNamed(context, MainPage.routeHomePage);
               }
@@ -44,7 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   children: [
                     const SizedBox(height: 16.0),
                     Image.asset('assets/images/app_logo.png'),
-                    CircularProgressIndicator(color: Colors.amber.shade300,)
+                    CircularProgressIndicator(
+                      color: Colors.amber.shade300,
+                    )
                   ],
                 );
               }
@@ -53,6 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+
   _getSurahInformation(SurahBloc bloc) {
     bloc.getSurahInfo();
   }

@@ -37,7 +37,6 @@ class _ReadSurahState extends State<ReadSurah> {
         "শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।";
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(title: Text(args.info.englishName.toString())),
       body: Center(
         child: BlocBuilder<AyatBloc, AyatState>(
@@ -70,7 +69,6 @@ class _ReadSurahState extends State<ReadSurah> {
                               ),
                             )
                           : const SizedBox.shrink(),
-
                       ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -90,7 +88,6 @@ class _ReadSurahState extends State<ReadSurah> {
             }),
       ),
     );
-
   }
 }
 
@@ -121,23 +118,27 @@ class ShowAyat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ayat.arabic==null ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator()) : SizedBox(
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: Card(
-          elevation: 2.0,
-          child: ListTile(
-            trailing: CircleAvatar(
-                backgroundColor: Colors.green.shade50,
-                child: Text(ayat.numberInSurah.toString())),
-            title: Text(getAyat(),
-                textDirection: TextDirection.rtl, textScaleFactor: 2.0),
-            subtitle: Text('(${ayat.numberInSurah}) ${ayat.text}',
-                textAlign: TextAlign.justify),
-          ),
-        ),
-      ),
-    );
+    return ayat.arabic == null
+        ? const SizedBox(
+            height: 16, width: 16, child: CircularProgressIndicator())
+        : SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Card(
+                elevation: 2.0,
+                child: ListTile(
+                  trailing: CircleAvatar(
+                      backgroundColor: Colors.green.shade50,
+                      child: Text(ayat.numberInSurah.toString())),
+                  title: Text(getAyat(),
+                      textDirection: TextDirection.rtl, textScaleFactor: 2.0),
+                  subtitle: Text('(${ayat.numberInSurah}) ${ayat.text}',
+                      textAlign: TextAlign.justify),
+                ),
+              ),
+            ),
+          );
   }
 }

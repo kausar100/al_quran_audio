@@ -50,7 +50,6 @@ class _MainPageState extends State<MainPage> {
         return value == true;
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
@@ -69,10 +68,8 @@ class _MainPageState extends State<MainPage> {
           currentIndex: _selectedIndex,
           selectedFontSize: 16,
           unselectedFontSize: 12,
-          unselectedItemColor: Colors.white,
           selectedItemColor: Colors.green,
           selectedIconTheme: const IconThemeData(size: 32),
-          backgroundColor: Colors.transparent,
           onTap: _onItemTapped,
         ),
       ),

@@ -21,7 +21,6 @@ class _ListeningState extends State<Listening> {
   Widget build(BuildContext context) {
     final surahBloc = BlocProvider.of<SurahBloc>(context, listen: true);
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: Center(
         child: BlocConsumer<SurahBloc, SurahState>(
             bloc: surahBloc,
@@ -93,7 +92,6 @@ class _ShowSurahDetailsState extends State<ShowSurahDetails> {
   Widget build(BuildContext context) {
     final ayats = widget.surah.ayahs!;
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
           title: Text(widget.surah.englishName.toString()), centerTitle: true),
       body: widget.surah.audio == null

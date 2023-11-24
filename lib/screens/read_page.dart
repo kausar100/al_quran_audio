@@ -20,15 +20,13 @@ class Reading extends StatefulWidget {
 class _ReadingState extends State<Reading> {
   _gotoReadPage(int surahNumber, AudioQuran quran) {
     Navigator.pushNamed(context, ReadSurah.routeReadSurah,
-        arguments:
-            SurahInfo(translationLanguage: Edition.bangla, info: quran));
+        arguments: SurahInfo(translationLanguage: Edition.bangla, info: quran));
   }
 
   @override
   Widget build(BuildContext context) {
     final surahBloc = BlocProvider.of<SurahBloc>(context, listen: true);
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: Center(
         child: BlocConsumer<SurahBloc, SurahState>(
             bloc: surahBloc,
