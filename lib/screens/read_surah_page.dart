@@ -120,7 +120,7 @@ class ShowAyat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return ayat.arabic==null ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator()) : SizedBox(
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

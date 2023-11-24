@@ -19,8 +19,8 @@ abstract class SurahDao{
   @insert
   Future<void> insertSurahAyat(List<AyatEntity> ayats);
 
-  @Query('UPDATE AyatEntity SET textEdition = :translation  WHERE surahNumber = :surahNumber')
-  Future<void> updateSurahAyat(String translation, int surahNumber);
+  @Query('UPDATE AyatEntity SET textEdition = :translation  WHERE surahNumber = :surahNumber AND numberInSurah = :numberInSurah')
+  Future<void> updateSurahAyat(String translation, int surahNumber, int numberInSurah);
 
 
 }

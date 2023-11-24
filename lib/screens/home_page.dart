@@ -46,7 +46,7 @@ class _AppViewState extends State<AppView> {
                     },
                   ),
                   TextButton(
-                    child: const Text('Yes, exit'),
+                    child: const Text('Yes'),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },

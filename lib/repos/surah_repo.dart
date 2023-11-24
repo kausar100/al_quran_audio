@@ -170,7 +170,7 @@ class APIRepository {
       //convert to surah entity
       final withEdition = ayat.copyWith(ayat.text!);
       ayahs.add(withEdition);
-      await surahDao.updateSurahAyat(ayat.text!, surahNumber);
+      await surahDao.updateSurahAyat(ayat.text!, surahNumber, ayat.numberInSurah!);
     }
     return ayahs;
   }

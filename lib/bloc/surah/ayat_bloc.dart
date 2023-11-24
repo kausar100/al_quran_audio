@@ -36,7 +36,7 @@ class AyatBloc extends Cubit<AyatState> {
     for (int i = 0; i < arabic.length; i++) {
       final withTranslation = Ayahs(number: arabic[i].number,
           numberInSurah: arabic[i].numberInSurah,
-          arabic: arabic[i].text,
+          arabic: arabic[i].arabic,
           text: translation[i].text,
           audio: arabic[i].audio);
 

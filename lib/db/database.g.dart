@@ -178,10 +178,11 @@ class _$SurahDao extends SurahDao {
   Future<void> updateSurahAyat(
     String translation,
     int surahNumber,
+    int numberInSurah,
   ) async {
     await _queryAdapter.queryNoReturn(
-        'UPDATE AyatEntity SET textEdition = ?1  WHERE surahNumber = ?2',
-        arguments: [translation, surahNumber]);
+        'UPDATE AyatEntity SET textEdition = ?1  WHERE surahNumber = ?2 AND numberInSurah = ?3',
+        arguments: [translation, surahNumber, numberInSurah]);
   }
 
   @override
