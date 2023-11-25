@@ -36,15 +36,21 @@ class _SplashScreenState extends State<SplashScreen> {
             },
             builder: (context, state) {
               if (state is LoadingSurahState || state is InitialSurahState) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                return Stack(
                   children: [
-                    const SizedBox(height: 16.0),
-                    Image.asset('assets/images/app_logo.png'),
-                    CircularProgressIndicator(
-                      color: Colors.amber.shade300,
-                    )
+                    Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 32.0),
+                          child: Image.asset('assets/images/app_logo.png',
+                              height: 100, width: 200),
+                        )),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 32.0),
+                      alignment: Alignment.bottomCenter,
+                      child: CircularProgressIndicator(
+                        color: Colors.amber.shade300,
+                      ),
+                    ),
                   ],
                 );
               }
